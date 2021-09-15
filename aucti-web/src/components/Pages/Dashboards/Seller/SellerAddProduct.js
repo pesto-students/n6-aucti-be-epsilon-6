@@ -26,7 +26,7 @@ const SellerAddProduct = (props) => {
 		} else if (!base_price) {
 			setError("Base Price cannot be blank");
 			valid = false;
-		} else if (base_price.isNaN()) {
+		} else if (isNaN(base_price)) {
 			setError("Base Price cannot be text");
 			valid = false;
 		} else if (!product_category) {
@@ -75,7 +75,7 @@ const SellerAddProduct = (props) => {
 					</p>
 
 					<p className="text-xs text-gray-500">
-						Last Modified: {product_picture.lastModifiedDate.toDateString()}
+						{/* Last Modified: {product_picture.lastModifiedDate.toDateString()} */}
 					</p>
 				</div>
 			);

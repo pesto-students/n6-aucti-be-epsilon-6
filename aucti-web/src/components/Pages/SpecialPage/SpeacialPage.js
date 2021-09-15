@@ -7,12 +7,12 @@ import {
 } from "../../../redux/actions/productActions";
 import Cardlist from "../../Shared/cardlist";
 import Quicklink from "../../Shared/Quicklink";
-import FilterList from "../../Shared/filterList";
 import Footer from "../../Layouts/Footer";
 import { Banner } from "../../Shared/Banner";
 import Pagination from "../../Shared/Pagination/Pagination";
 import Loader from "../../Shared/Loader";
 import ProductCard from "../../Shared/ProductCard";
+import SpecialPageSkelton from "./SpecialPageSkelton";
 let PageSize = 6;
 function SpeacialPage(props) {
 	const { specialProducts } = props;
@@ -63,7 +63,7 @@ function SpeacialPage(props) {
 	}, [currentPage]);
 
 	if (loading) {
-		return <Loader></Loader>;
+		return <SpecialPageSkelton />;
 	}
 	return (
 		<>

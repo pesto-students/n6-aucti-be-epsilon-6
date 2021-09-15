@@ -5,5 +5,5 @@ import RegisterForm from "../../../Pages/Auth/Signup/RegisterForm";
 test("form labels render", async() => {
   render(<RegisterForm />);
   const firstname = screen.queryByText("First name")
-  expect(firstname).toBeInTheDocument();
+  expect(firstname).toBeInTheDocument;
 });

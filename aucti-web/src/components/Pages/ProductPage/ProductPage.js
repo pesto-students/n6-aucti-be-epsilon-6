@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import FilterCheckBox from "../../Shared/filterCheckbox";
 import ProductDetail from "../../Shared/ProductDetails";
 import {
   getProductAction,
@@ -13,6 +12,8 @@ import history from "../../../routes/history";
 import { addBidAction } from "../../../redux/actions/buyerActions";
 import { addWishlistAction } from "../../../redux/actions/wishlistActions";
 import ConfirmModal from "../../Shared/ConfirmModal";
+import ProductCardSkelton from "../../Shared/ProductCardSkelton";
+import ProductSkeltonPage from "./ProductSkeltonPage";
 
 const ProductPage = (props) => {
   const { product, user } = props;
@@ -80,7 +81,7 @@ const ProductPage = (props) => {
   };
 
   if (loading) {
-    return <Loader />;
+    return <ProductSkeltonPage />;
   }
 
   return (
@@ -169,7 +170,7 @@ const ProductPage = (props) => {
               </button>
             )}
           </div>
-          <p className="text-sm text-gray-500 dark:text-gray-300">
+          <p aria-label="productspecificdescription" className="text-sm text-gray-500 dark:text-gray-300">
             {productState.description}
           </p>
         </form>
@@ -179,7 +180,7 @@ const ProductPage = (props) => {
         title={"Bid Now!"}
         setShowModal={setShowModal}
       >
-        <form action="#" method="POST">
+        <form  action="#" method="POST">
           <div className="flex flex-row ">
             <div className="flex-none mr-2 text-sm font-medium text-gray-500 dark:text-gray-300">
               Base Price
