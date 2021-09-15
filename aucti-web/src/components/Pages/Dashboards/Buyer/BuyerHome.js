@@ -88,7 +88,7 @@ const BuyerHome = (props) => {
 	return (
 		<>
 			<div className="pb-16">
-				<h1 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200 px-5 pb-4">
+				<h1 data-testid="Buyerheading" className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200 px-5 pb-4">
 					{"Welcome, " + user?.displayName}
 				</h1>
 

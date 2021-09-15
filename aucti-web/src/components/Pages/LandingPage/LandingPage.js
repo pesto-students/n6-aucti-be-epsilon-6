@@ -1,60 +1,103 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { getProductsAction } from "../../../redux/actions/productActions";
-import Cardlist from "../../Shared/cardlist";
-import Quicklink from "../../Shared/Quicklink";
-import FilterList from "../../Shared/filterList";
-import Footer from "../../Layouts/Footer";
 import { Banner } from "../../Shared/Banner";
 import Pagination from "../../Shared/Pagination/Pagination";
 import Loader from "../../Shared/Loader";
 import ProductCard from "../../Shared/ProductCard";
+import LandingPageSkelton from "./LandingPageSkelton";
+import LazyLoad from "react-lazyload";
+import ProductCardSkelton from "../../Shared/ProductCardSkelton";
 
+let PageSize = 8;
 function LandingPage(props) {
-	const { products } = props;
-	useEffect(() => {
-		props.getProducts();
-	}, []);
-	if (!products) {
-		return <Loader></Loader>;
-	}
-	return (
-		<>
-			<div
-				id="main"
-				className="grid items-start xl:grid-cols-3 md:grid-cols-2 gap-1  xs:grid-cols-1"
-			>
-				<Banner></Banner>
+  const { products } = props;
 
-				{products.map((item) => {
-					return <ProductCard key={item.id} bidproduct={item}></ProductCard>;
-				})}
-			</div>
-			<div className="grid justify-items-end p-4">
-				<Pagination
-					currentPage={1}
-					totalCount={20}
-					pageSize={5}
-					// onPageChange={(page) => setCurrentPage(page)}
-					// onNext={onNext}
-					// onPrevious={onPrevious}
-					// handlePageSelect={handlePageSelect}
-				/>
-			</div>
-		</>
-	);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [productsFiltered, setProductsFiltered] = useState(products.data);
+  useEffect(() => {
+    const { firstPageIndex, lastPageIndex } = currentTableData;
+
+    props.getProducts(firstPageIndex, lastPageIndex);
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (products && products?.data !== productsFiltered) {
+      setProductsFiltered(products.data);
+      setLoading(false);
+    }
+  }, [products]);
+
+  const onNext = () => {
+    setLoading(true);
+    setCurrentPage(currentPage + 1);
+  };
+  const onPrevious = () => {
+    setLoading(true);
+    setCurrentPage(currentPage - 1);
+  };
+
+  const handlePageSelect = (page) => {
+    setLoading(true);
+    setCurrentPage(page);
+  };
+
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    return { firstPageIndex, lastPageIndex };
+  }, [currentPage]);
+
+  if (loading) {
+    return <LandingPageSkelton />;
+  }
+  return (
+    <>
+      <div
+        id="main"
+        className="grid items-start xl:grid-cols-3 md:grid-cols-2 gap-1  xs:grid-cols-1"
+      >
+        <Banner></Banner>
+
+        {productsFiltered !== null &&
+          productsFiltered.map((item) => (
+            <ProductCard
+              data-testid="landing_product_card"
+              key={item.id}
+              bidproduct={item}
+            ></ProductCard>
+          ))}
+      </div>
+      <div
+        data-testid="landing_page_pagination"
+        className="grid justify-items-end p-4"
+      >
+        <Pagination
+          currentPage={currentPage}
+          totalCount={products.length}
+          pageSize={PageSize}
+          onPageChange={(page) => setCurrentPage(page)}
+          onNext={onNext}
+          onPrevious={onPrevious}
+          handlePageSelect={handlePageSelect}
+        />
+      </div>
+    </>
+  );
 }
 
 const mapStateToProps = (state) => {
-	return {
-		products: state.productsReducer,
-	};
+  return {
+    products: state.productsReducer,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		getProducts: () => dispatch(getProductsAction()),
-	};
+  return {
+    getProducts: (firstPageIndex, lastPageIndex) =>
+      dispatch(getProductsAction(firstPageIndex, lastPageIndex)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
