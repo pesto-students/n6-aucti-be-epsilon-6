@@ -1,39 +1,39 @@
-import React, { useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { productsLoaded } from "./redux/actions/productActions";
+import React from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
-import LandingPage from "./components/Pages/LandingPage/LandingPage";
-import PageNotFound from "./components/Pages/ErrorPage/PageNotFound";
-import Layout from "./components/Layouts/layout";
-import ProductPage from "./components/Pages/ProductPage/ProductPage";
-import SearchPage from "./components/Pages/SearchPage/SearchPage";
+import algoliasearch from 'algoliasearch';
+import { InstantSearch } from 'react-instantsearch-dom';
+
+import PageNotFound from './components/Pages/PageNotFound';
+
+import Dashboard from './components/Pages/Dashboards/Dashboard';
+import Login from './components/Pages/Auth/Login/Login';
+
+import BuyerRoute from './routes/BuyerRoute';
+import SellerRoute from './routes/SellerRoute';
+import BuyerPayments from './components/Pages/Dashboards/Buyer/BuyerPayments';
+import Home from './routes/Home';
+const searchClient = algoliasearch(
+  'DZTA0M5OD8',
+  'bfcc29ed9a87db03544730c93ed22ac2',
+);
 function App() {
-	const dispatch = useDispatch();
-	useEffect(() => {
-		console.log("app rerendered");
-		dispatch(productsLoaded());
-	}, []);
+  return (
+    <>
+      <InstantSearch searchClient={searchClient} indexName="aucti_products">
+        <Switch>
+          <Route exact path="/" render={() => <Redirect to="/home" />} />
+          <Route path="/login" component={Login} />
+          <Route path="/home" component={Home} />
+          <BuyerRoute path="/buyer" component={Dashboard} />
+          <SellerRoute path="/seller" component={Dashboard} />
+          <BuyerRoute path="/payments/:bid_id" component={BuyerPayments} />
 
-	function onClick() {
-		console.log("btn clicked");
-	}
-	function onChange(e) {
-		console.log(e.target.name, e.target.value);
-	}
-
-	return (
-		<div>
-			<Layout>
-				<Switch>
-					<Route exact path="/" component={LandingPage} />
-					<Route exact path="/product/specific" component={ProductPage} />
-					<Route exact path="/search" component={SearchPage} />
-					<Route path="/**" component={PageNotFound} />
-				</Switch>
-			</Layout>
-		</div>
-	);
+          <Route path="/**" component={PageNotFound} />
+        </Switch>
+      </InstantSearch>
+    </>
+  );
 }
 
 export default App;

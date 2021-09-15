@@ -1,29 +1,79 @@
-import React from 'react'
-import Cardlist from '../../Shared/cardlist'
-import FilterCheckBox from '../../Shared/filterCheckbox'
-import FilterList from '../../Shared/filterList'
-import FilterRadio from '../../Shared/filterRadio'
-import Tag from '../../Shared/tag'
+import React, { useEffect } from "react";
 
-const SearchPage = () => {
-    return (<>
-           <div class="col-start-1 row-start-1 col-span-1 row-span-4 ">
-                <FilterCheckBox />
-                <FilterList/>
-                <FilterRadio/>
-            </div>  
-            <div class="col-start-2 row-start-1 col-span-4 row-span-1">
-             <div className="flex justify-start">
-             <Tag name={"trending"}/><Tag name={"fresh arrival"}/><Tag name={"old"}/><Tag name={"popular"}/><Tag name={"new"}/>
-             </div>
-             <div className="flex justify-start p-2">
-                 < div className="grid grid-cols-3 gap-2 justify evenly">
-                  <Cardlist/>
-                  </div>
-            </div>
-             </div>
-        </>
-    )
-}
+import "./Search.css";
+import { Configure } from "react-instantsearch-dom";
 
-export default SearchPage
+import AlgoliaSearch from "./AlgoliaSearch";
+import { connect } from "react-redux";
+import { showpriceRangeAction } from "../../../redux/actions/userActions";
+import CustomSortBy from "../../Shared/CustomSortBy";
+import CustomPagination from "../../Shared/CustomPagination";
+
+const SearchPage = (props) => {
+	const { searchFilter } = props;
+
+	useEffect(() => {
+		props.dispatch(showpriceRangeAction(true));
+		return () => {
+			props.dispatch(showpriceRangeAction(true));
+		};
+	}, []);
+
+	return (
+		<>
+			{searchFilter !== null && (
+				<Configure
+					filters={`product_category:${searchFilter}`}
+					// hitsPerPage={4}
+					analytics={false}
+					// enablePersonalization={true}
+					distinct
+				/>
+			)}
+			<div className="flex justify-end p-4">
+				<CustomSortBy
+					defaultRefinement="aucti_products"
+					items={[
+						{ value: "aucti_products", label: "Featured" },
+						{ value: "instant_search_price_asc", label: "Price asc." },
+						{ value: "instant_search_price_desc", label: "Price desc." },
+					]}
+				/>
+			</div>
+
+			<div className="grid xl:px-6 xs:px-0  items-start xl:grid-cols-3 md:grid-cols-2 gap-1  xs:grid-cols-1">
+				<AlgoliaSearch />
+			</div>
+			<div className="flex justify-end p-4">
+				{" "}
+				<CustomPagination
+				// translations={{
+				// 	previous: "‹",
+				// 	next: "›",
+				// 	first: "«",
+				// 	last: "»",
+				// 	page(currentRefinement) {
+				// 		return currentRefinement;
+				// 	},
+				// 	ariaPrevious: "Previous page",
+				// 	ariaNext: "Next page",
+				// 	ariaFirst: "First page",
+				// 	ariaLast: "Last page",
+				// 	ariaPage(currentRefinement) {
+				// 		return `Page ${currentRefinement}`;
+				// 	},
+				// }}
+				/>
+			</div>
+		</>
+	);
+};
+
+const mapStateToProps = (state) => {
+	return {
+		product: state.productReducer,
+		searchFilter: state.searchFilter,
+	};
+};
+
+export default connect(mapStateToProps)(SearchPage);

@@ -1,0 +1,9 @@
+node_modules/
+functions/
+
+serviceAccountKey.json
+package-lock.json
+garbage.txt
+testing.rest
+# Local Netlify folder
+.netlify
