@@ -1,5 +1,5 @@
-# Aucti
--Your Auction Partner
+# Aucti : The Auction Platform
+
 
 Aucti is an auction platform which provides an ecosystem that generates maximum revenue for the sellers at the same time providing the buyers with a seamless experience of shopping through auctions.
 
