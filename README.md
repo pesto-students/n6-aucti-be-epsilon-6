@@ -26,7 +26,7 @@ This repository contains backend functions which connects with Firebase Firestor
    ```sh
    npm install
    ```
-3. Copy your Firebase service account details in `serviceAccountKey.json`
+3. Copy your Firebase service account details to `serviceAccountKey.json`
   
 4. Enter your environmental variables in `.env` file
    ```sh
