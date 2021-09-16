@@ -16,6 +16,19 @@ This repository contains backend functions which connects with Firebase Firestor
 - Firebase service account
 - Algolia account and index
 
+
+## Firebase Collections
+
+Please create these collections in your firestore database
+
+- products
+- users
+- bids
+- wishlist
+- addresses
+- bankAccounts
+
+
 ## Set up and run locally
 
 1. Clone the repo
