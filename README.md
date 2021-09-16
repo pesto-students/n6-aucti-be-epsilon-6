@@ -13,6 +13,8 @@ This repository contains backend functions which connects with Firebase Firestor
 ## Prerequisites
 
 - [NodeJS](https://nodejs.org) from 10 to 14.17.6
+- Firebase service account
+- Algolia account and index
 
 ## Set up and run locally
 
