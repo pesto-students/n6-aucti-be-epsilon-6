@@ -1,11 +1,13 @@
 const nodemailer = require("nodemailer");
 
 const mailTransporter = nodemailer.createTransport({
-	service: "gmail",
-	auth: {
-		user: process.env.NODEMAILER_USER,
-		pass: process.env.NODEMAILER_PASS,
-	},
+  host: "smtp.zoho.com",
+  port: "465",
+  secure: true, // use SSL
+  auth: {
+    user: "auctiapp",
+    pass: "epsilon@pesto",
+  },
 });
 
 module.exports = { mailTransporter };

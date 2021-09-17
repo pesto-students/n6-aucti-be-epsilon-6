@@ -4,3 +4,5 @@ serviceAccountKey.json
 package-lock.json
 .env
 .vscode
+# Local Netlify folder
+.netlify
