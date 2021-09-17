@@ -5,8 +5,8 @@ const mailTransporter = nodemailer.createTransport({
   port: "465",
   secure: true, // use SSL
   auth: {
-    user: "auctiapp",
-    pass: "epsilon@pesto",
+    user: process.env.NODEMAILER_USER,
+    pass: process.env.NODEMAILER_PASS,
   },
 });
 
