@@ -7,6 +7,8 @@ Auctions increase the price of a product for the seller and can get a threshold 
 
 Aucti pays more forcus on  products that are not mainstream and are high in public demand, for these kind of products an auction might be the best mechanism to extract the maximum value.
 
+The website can be reached at :  [https://aucti-fe.netlify.app](https://aucti-fe.netlify.app)
+
 This repository contains backend functions which connects with Firebase Firestore Database.
 
 
